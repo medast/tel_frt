@@ -1,34 +1,43 @@
 name: Telegram logger
 
 on:
+  # Schedulato ogni giorno alle 14:20 UTC
   schedule:
-    - cron: '0 14 * * *'   # Esecuzione alle 21:00 UTC
-  workflow_dispatch:       # Permette di lanciarlo manualmente
+    - cron: '20 14 * * *'
+  # Permette di eseguire manualmente dal tab Actions
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
+      # 1. Clona il repository
       - name: Check out repo
         uses: actions/checkout@v3
 
+      # 2. Imposta la versione di Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
+      # 3. Installa le librerie
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
 
+      # 4. Ripristina la sessione Telethon dal secret base64
+      - name: Restore Telethon session
+        run: echo "$TELETHON_SESSION_B64" | base64 -d > session_name.session
+        env:
+          TELETHON_SESSION_B64: ${{ secrets.TELETHON_SESSION_B64 }}
+
+      # 5. Esegui lo script
       - name: Run script
-        # Qui importiamo i segreti come variabili d'ambiente
+        run: python tel_frt_sec.py
         env:
           API_ID: ${{ secrets.API_ID }}
           API_HASH: ${{ secrets.API_HASH }}
-          GOOGLE_SCRIPT_URL: ${{ secrets.GOOGLE_SCRIPT_URL }}
           GROUP_ID: ${{ secrets.GROUP_ID }}
-        run: |
-          python tel_frt_sec.py
+          # Aggiungi altre variabili d'ambiente se ti servono
