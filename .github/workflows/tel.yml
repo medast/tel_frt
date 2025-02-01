@@ -31,4 +31,4 @@ jobs:
           GOOGLE_SCRIPT_URL: ${{ secrets.GOOGLE_SCRIPT_URL }}
           GROUP_ID: ${{ secrets.GROUP_ID }}
         run: |
-          python scrape_telegram.py
+          python tel_frt_sec.py
