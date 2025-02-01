@@ -1,0 +1,34 @@
+name: Telegram logger
+
+on:
+  schedule:
+    - cron: '0 14 * * *'   # Esecuzione alle 21:00 UTC
+  workflow_dispatch:       # Permette di lanciarlo manualmente
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run script
+        # Qui importiamo i segreti come variabili d'ambiente
+        env:
+          API_ID: ${{ secrets.API_ID }}
+          API_HASH: ${{ secrets.API_HASH }}
+          GOOGLE_SCRIPT_URL: ${{ secrets.GOOGLE_SCRIPT_URL }}
+          GROUP_ID: ${{ secrets.GROUP_ID }}
+        run: |
+          python scrape_telegram.py
