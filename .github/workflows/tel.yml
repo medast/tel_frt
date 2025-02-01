@@ -40,4 +40,5 @@ jobs:
           API_ID: ${{ secrets.API_ID }}
           API_HASH: ${{ secrets.API_HASH }}
           GROUP_ID: ${{ secrets.GROUP_ID }}
-          # Aggiungi altre variabili d'ambiente se ti servono
+          TELETHON_SESSION_B64: ${{ secrets.TELETHON_SESSION_B64 }}
+          GOOGLE_SCRIPT_URL: ${{ secrets.GOOGLE_SCRIPT_URL }}
